@@ -1,14 +1,1 @@
-mkdir github-streak
-cd github-streak
-git init
-echo "# My Streak Repo" > README.md
-git add .
-git commit -m "Initial commit"
-git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPO.git
-git push -u origin main
-test
-still testing 
-still testing 
-still testing
-still testing 
-still testing
+
