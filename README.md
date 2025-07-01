@@ -1,8 +1,4 @@
 # Solana Meme-Coin AI Trader
-
-⚠️ **Disclaimer**: This software is experimental and provided for educational purposes only. Trading cryptocurrencies is highly risky. You are solely responsible for any financial loss, wallet security, and compliance with local regulations.
-
-## Overview
 This project implements an automated trading agent that swaps **meme coins** on the Solana blockchain. It combines:
 
 1. **Market data** from Jupiter Aggregator (best-rate DEX router on Solana).
