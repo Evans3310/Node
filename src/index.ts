@@ -48,13 +48,13 @@ async function fetchPrice(ctx: JupiterContext, outMintStr: string): Promise<numb
     const routes = await ctx.jupiter.computeRoutes({
       inputMint: ctx.baseMint,
       outputMint: new PublicKey(outMintStr),
-      amount: JSBI.BigInt(1_000_000), // 1 USDC (6 decimals)
+      amount: JSBI.BigInt(1_000_000) as any, // cast to avoid JSBI type mismatch
       slippageBps: 10,
     });
 
     if (!routes.routesInfos.length) throw new Error('No quote');
     const best = routes.routesInfos[0];
-    const price = JSBI.toNumber(best.outAmount) / JSBI.toNumber(best.inAmount);
+    const price = JSBI.toNumber(best.outAmount as any) / JSBI.toNumber(best.inAmount as any);
     return price;
   } catch (err) {
     console.error('Quote fetch failed', err);

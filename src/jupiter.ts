@@ -46,7 +46,7 @@ export async function executeSwap(
     const routes = await ctx.jupiter.computeRoutes({
       inputMint: inMint,
       outputMint: outMint,
-      amount: JSBI.BigInt(amount),
+      amount: JSBI.BigInt(amount) as any,
       slippageBps,
     });
 
@@ -57,7 +57,8 @@ export async function executeSwap(
 
     const bestRoute: RouteInfo = routes.routesInfos[0];
     const { execute } = await ctx.jupiter.exchange({ routeInfo: bestRoute });
-    const { txid } = await execute();
+    const swapRes: any = await execute();
+    const txid: string = swapRes?.txid ?? swapRes;
     console.log(`Swapped ${amount} in ${inMint.toBase58()} -> ${outMint.toBase58()} | tx: ${txid}`);
     return txid;
   } catch (err) {
