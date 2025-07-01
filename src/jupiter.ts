@@ -42,21 +42,26 @@ export async function executeSwap(
   amount: number,
   slippageBps: number,
 ): Promise<string | null> {
-  const routes = await ctx.jupiter.computeRoutes({
-    inputMint: inMint,
-    outputMint: outMint,
-    amount: JSBI.BigInt(amount),
-    slippageBps,
-  });
+  try {
+    const routes = await ctx.jupiter.computeRoutes({
+      inputMint: inMint,
+      outputMint: outMint,
+      amount: JSBI.BigInt(amount),
+      slippageBps,
+    });
 
-  if (!routes.routesInfos.length) {
-    console.warn('No swap routes found');
+    if (!routes.routesInfos.length) {
+      console.warn('No swap routes found');
+      return null;
+    }
+
+    const bestRoute: RouteInfo = routes.routesInfos[0];
+    const { execute } = await ctx.jupiter.exchange({ routeInfo: bestRoute });
+    const { txid } = await execute();
+    console.log(`Swapped ${amount} in ${inMint.toBase58()} -> ${outMint.toBase58()} | tx: ${txid}`);
+    return txid;
+  } catch (err) {
+    console.error('Swap execution failed', err);
     return null;
   }
-
-  const bestRoute: RouteInfo = routes.routesInfos[0];
-  const { execute } = await ctx.jupiter.exchange({ routeInfo: bestRoute });
-  const { txid } = await execute();
-  console.log(`Swapped ${amount} in ${inMint.toBase58()} -> ${outMint.toBase58()} | tx: ${txid}`);
-  return txid;
 }

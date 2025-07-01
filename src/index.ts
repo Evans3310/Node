@@ -4,8 +4,6 @@ import { initJupiter, executeSwap, JupiterContext } from './jupiter';
 import { MomentumStrategy } from './strategy';
 import { TradeSide } from './types';
 
-import fetch from 'node-fetch';
-import { TOKEN_LIST_URL } from '@jup-ag/core';
 import JSBI from 'jsbi';
 
 dotenv.config();
@@ -46,17 +44,22 @@ async function main() {
 }
 
 async function fetchPrice(ctx: JupiterContext, outMintStr: string): Promise<number> {
-  const routes = await ctx.jupiter.computeRoutes({
-    inputMint: ctx.baseMint,
-    outputMint: new PublicKey(outMintStr),
-    amount: JSBI.BigInt(1_000_000), // 1 USDC (6 decimals)
-    slippageBps: 10,
-  });
+  try {
+    const routes = await ctx.jupiter.computeRoutes({
+      inputMint: ctx.baseMint,
+      outputMint: new PublicKey(outMintStr),
+      amount: JSBI.BigInt(1_000_000), // 1 USDC (6 decimals)
+      slippageBps: 10,
+    });
 
-  if (!routes.routesInfos.length) throw new Error('No quote');
-  const best = routes.routesInfos[0];
-  const price = JSBI.toNumber(best.outAmount) / JSBI.toNumber(best.inAmount);
-  return price;
+    if (!routes.routesInfos.length) throw new Error('No quote');
+    const best = routes.routesInfos[0];
+    const price = JSBI.toNumber(best.outAmount) / JSBI.toNumber(best.inAmount);
+    return price;
+  } catch (err) {
+    console.error('Quote fetch failed', err);
+    throw err;
+  }
 }
 
 async function reactToDecision(
@@ -75,7 +78,11 @@ async function reactToDecision(
   const amount = 5 * 1_000_000; // 6 decimals
 
   console.log(`${side.toUpperCase()} ${amount / 1_000_000} ${side === 'buy' ? 'of' : 'for'} ${tokenMintStr}`);
-  await executeSwap(ctx, inMint, outMint, amount, slippageBps);
+  try {
+    await executeSwap(ctx, inMint, outMint, amount, slippageBps);
+  } catch (err) {
+    console.error('Swap failed', err);
+  }
 }
 
 main().catch((err) => console.error(err));

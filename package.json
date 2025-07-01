@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "start": "TS_NODE_TRANSPILE_ONLY=true ts-node src/index.ts",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "test": "vitest"
   },
   "keywords": [
     "solana",
@@ -31,6 +32,8 @@
     "@typescript-eslint/parser": "^6.21.0",
     "eslint": "^8.55.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vitest": "^0.34.4",
+    "@types/node-fetch": "^2.6.4"
   }
 }
