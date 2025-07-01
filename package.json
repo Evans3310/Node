@@ -1,0 +1,39 @@
+{
+  "name": "solana-meme-ai-trader",
+  "version": "0.1.0",
+  "description": "AI-powered trading bot that swaps meme coins on Solana via Jupiter aggregator.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "TS_NODE_TRANSPILE_ONLY=true ts-node src/index.ts",
+    "lint": "eslint . --ext .ts",
+    "test": "vitest"
+  },
+  "keywords": [
+    "solana",
+    "trading-bot",
+    "meme-coins",
+    "ai",
+    "jupiter"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@jup-ag/core": "^4.0.0-beta.21",
+    "@solana/web3.js": "^1.93.3",
+    "dotenv": "^16.3.1",
+    "jsbi": "^4.3.2",
+    "node-fetch": "^2.6.11",
+    "simple-statistics": "^7.8.3"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.7",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "eslint": "^8.55.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "vitest": "^0.34.4",
+    "@types/node-fetch": "^2.6.4"
+  }
+}
