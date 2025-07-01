@@ -1,5 +1,5 @@
 import { PricePoint, TradeSide } from './types';
-import ss from 'simple-statistics';
+import * as ss from 'simple-statistics';
 
 export interface MomentumStrategyOptions {
   window: number; // how many price points to keep
